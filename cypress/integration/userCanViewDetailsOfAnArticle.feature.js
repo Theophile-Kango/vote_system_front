@@ -16,5 +16,4 @@ describe('View details of an article', () => {
       cy.get('[data-testid=title]').should('contain.text', "My Awesome Article")
     });
   });
-
 });
