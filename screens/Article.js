@@ -11,6 +11,7 @@ import {
 const Article = ({ article, navigation }) => {
   return (
     <TouchableOpacity
+      testID={`article-${article.id}`}
       onPress={() => {
         navigation.navigate('Second Screen', { article: article })
       }}
@@ -20,7 +21,7 @@ const Article = ({ article, navigation }) => {
         style={styles.image}
       />
       <View style={styles.card}>
-        <Text style={styles.title}>{article.title}</Text>
+        <Text testID="title" style={styles.title}>{article.title}</Text>
       </View>
     </TouchableOpacity>
   )

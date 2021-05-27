@@ -1,0 +1,58 @@
+{
+  "articles": [
+    {
+      "id": 999,
+      "premium": true,
+      "title": "My Awesome Article",
+      "teaser": "Something more",
+      "date": "2021-05-12",
+      "rating": 5,
+      "image": "https://www.kino.dk/sites/default/files/styles/k_width_big/public/primary-pictures/alien_1.jpg?itok=OklM89YT"
+    },
+    {
+      "id": 2,
+      "premium": true,
+      "title": "Sup",
+      "teaser": "something",
+      "date": "2021-05-12",
+      "rating": 4.3,
+      "image": "https://media.nature.com/lw800/magazine-assets/d41586-018-05310-x/d41586-018-05310-x_15811194.jpg"
+    },
+    {
+      "id": 3,
+      "premium": false,
+      "title": "Halo",
+      "teaser": "something",
+      "date": "2021-05-12",
+      "rating": 4.3,
+      "image": "https://store-images.s-microsoft.com/image/apps.41418.13510798886375925.7fdd10df-25c0-4a5f-90ce-63205d1f83c4.d5a00a77-17c9-433d-a71d-8f68eef63ed6?mode=scale&q=90&h=1080&w=1920"
+    },
+    {
+      "id": 4,
+      "premium": true,
+      "title": "Something",
+      "teaser": "Something more",
+      "date": "2021-05-12",
+      "rating": 4.3,
+      "image": "https://images.theconversation.com/files/218823/original/file-20180514-100722-1yxg7ip.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=900.0&fit=crop"
+    },
+    {
+      "id": 5,
+      "premium": false,
+      "title": "Sup",
+      "teaser": "something",
+      "date": "2021-05-12",
+      "rating": 4.3,
+      "image": "https://cdn.vox-cdn.com/thumbor/_bSwTQbC7-G0QEF0IBmY6wk1N7E=/0x0:3000x2000/1200x800/filters:focal(1342x216:1822x696)/cdn.vox-cdn.com/uploads/chorus_image/image/62634650/bush_charity.0.jpg"
+    },
+    {
+      "id": 6,
+      "premium": false,
+      "title": "Halo",
+      "teaser": "something",
+      "date": "2021-05-12",
+      "rating": 4.3,
+      "image": "https://store-images.s-microsoft.com/image/apps.41418.13510798886375925.7fdd10df-25c0-4a5f-90ce-63205d1f83c4.d5a00a77-17c9-433d-a71d-8f68eef63ed6?mode=scale&q=90&h=1080&w=1920"
+    }
+  ]
+}
