@@ -19,7 +19,7 @@ class Auth {
       }`;
     this.apiAuthUrl = `${this.apiUrl}${options.authUrl ? options.authUrl : "/auth"
       }`;
-    this.emailInput = options.emailInput ? options.emailInput : "email";
+    this.matriculeInput = options.matriculeInput ? options.matriculeInput : "matricule";
     this.passwordField = options.passwordField
       ? options.passwordField
       : "password";
