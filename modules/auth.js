@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const apiUrl =
+const apiUrl = "http://localhost:3000";
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,
@@ -81,11 +81,11 @@ class Auth {
       }
     });
   }
-  signIn(email, password) {
+  signIn(matricule, password) {
     return new Promise(async (resolve, reject) => {
       try {
         const signInResponse = await axios.post(this.signInUrl, {
-          [this.emailInput]: email,
+          [this.matriculeInput]: matricule,
           [this.passwordField]: password,
         });
         this.setSession(signInResponse.headers);
@@ -170,12 +170,12 @@ class Auth {
       }
     });
   }
-  resetPassword(email, redirectUrl) {
+  resetPassword(matricule, redirectUrl) {
     return new Promise(async (resolve, reject) => {
       try {
         const resetPasswordResponse = await axios.post(
           `${this.apiAuthUrl}/password`,
-          { email, redirect_url: redirectUrl }
+          { matricule, redirect_url: redirectUrl }
         );
         this.debugIfActive(resetPasswordResponse);
         resolve(resetPasswordResponse);

@@ -4,13 +4,13 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native'
 import Auth from '../modules/auth'
 
 const Authentication = ({ navigation }) => {
-  const [email, setEmail] = useState()
+  const [matricule, setMatricule] = useState()
   const [password, setPassword] = useState()
   const [message, setMessage] = useState()
 
-  const auth = new Auth({ host: 'https://fakest-newzz.herokuapp.com/api' })
+  const auth = new Auth({ host: 'http://localhost:3000' })
   const authenticateUser = () => {
-    auth.signIn(email, password).then(response => {
+    auth.signIn(matricule, password).then(response => {
       navigation.navigate('My Application')
     }).catch(error => {
       setMessage(error.response.data.errors[0])
@@ -18,15 +18,13 @@ const Authentication = ({ navigation }) => {
   }
   return (
     <View>
-
-
       { message && <Text>{message}</Text>}
       <>
         <Text>Log in</Text>
         <TextInput
           style={styles.input}
-          placeholder='Email'
-          onChangeText={text => setEmail(text)}
+          placeholder='Matricule'
+          onChangeText={text => setMatricule(text)}
         />
 
         <TextInput
@@ -48,7 +46,7 @@ const Authentication = ({ navigation }) => {
   )
 }
 
-export default Authentication
+export default Authentication;
 
 const styles = StyleSheet.create({
   input: {
