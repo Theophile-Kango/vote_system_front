@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import FirstScreen from './screens/FirstScreen'
-import SecondScreen from './screens/SecondScreen'
-import Authentication from './screens/Authentication'
+import FirstScreen from './screens/FirstScreen';
+import SecondScreen from './screens/SecondScreen';
+import Authentication from './screens/Authentication';
+import Logout from './components/Logout';
 
 const Stack = createStackNavigator()
 
 const App = () => {
-  const name = "My Application"
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -18,9 +18,12 @@ const App = () => {
           component={Authentication}
         />
         <Stack.Screen
-          name={name}
+          name="My Application"
           component={FirstScreen}
-          options={() => ({
+          options={({route, navigation}) => ({
+            headerRight: () => (
+              <Logout navigation={navigation} />
+            ),
             headerStyle: {
               backgroundColor: '#892b2f',
             },
@@ -28,21 +31,23 @@ const App = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
               fontSize: 30
-            },
-            headerRight: () => (
-              <View>
-                <Text>Some text</Text>
-              </View>
-            )
+            }
           })
           }
         />
         <Stack.Screen
           name='Second Screen'
           component={SecondScreen}
-          options={() => ({
-            headerBackTitle: 'Take me back'
-          })}
+          options={({route, navigation}) => ({
+            headerRight: () => (
+              <Logout navigation={navigation} />
+            ),
+            headerBackTitle: 'Take me back',
+            headerRight: () => (
+              <Logout />
+            )
+          })
+        }
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const apiUrl = "http://localhost:3000";
+const apiUrl = "https://vote-system-api.herokuapp.com";
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,
@@ -86,7 +86,7 @@ class Auth {
       try {
         const signInResponse = await axios.post(this.signInUrl, {
           [this.matriculeInput]: matricule,
-          [this.passwordField]: password,
+          [this.passwordField]: password
         });
         this.setSession(signInResponse.headers);
         const validateResponse = await this.validateToken(
@@ -100,17 +100,20 @@ class Auth {
     });
   }
   signOut() {
-    this.session = JSON.parse(storage.getItem(storageKey));
+    this.session = storage.getItem(storageKey);
     if (!this.session) throw "No active session";
     storage.removeItem(storageKey);
     const lastSession = this.session;
     this.session = undefined;
+      
     return new Promise(async (resolve, reject) => {
+      const result = await lastSession;
       try {
         const logOutResponse = await axios.delete(this.signOutUrl, {
-          headers: { ...lastSession },
+          headers: JSON.parse(result),
         });
         resolve(logOutResponse.data);
+        
       } catch (err) {
         resolve("Error when delete server session but local was deleted");
       }
@@ -231,6 +234,7 @@ class Auth {
       return (this.session = headers);
     }
     const session = {
+      'Content-Type': 'application/json',
       ["access-token"]: headers["access-token"]
         ? headers["access-token"]
         : this.session["access-token"],
