@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Auth from '../modules/auth'
 
 const Authentication = ({ navigation }) => {
   const [matricule, setMatricule] = useState()
-  const [password, setPassword] = useState()
-  const [message, setMessage] = useState()
+  const [password, setPassword] = useState();
+  const [message, setMessage] = useState();
+  const storage = AsyncStorage;
+  const currentUser = "current-user";
 
   const auth = new Auth({ host: 'http://localhost:3000' })
   const authenticateUser = () => {
     auth.signIn(matricule, password).then(response => {
-      navigation.navigate('My Application')
+      navigation.navigate('My Application');
+      storage.setItem(currentUser, JSON.stringify(response.data));
     }).catch(error => {
-      setMessage(error.response.data.errors[0])
+      setMessage("Erreur d'identification, vérifiez votre matricule et votre mot de passe")
     })
   }
   return (

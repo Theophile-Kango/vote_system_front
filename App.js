@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import FirstScreen from './screens/FirstScreen';
 import SecondScreen from './screens/SecondScreen';
 import Authentication from './screens/Authentication';
-import Logout from './components/Logout';
+import Registration from './screens/Registration';
+import Nav from './components/Nav';
 
 const Stack = createStackNavigator()
 
@@ -18,11 +19,15 @@ const App = () => {
           component={Authentication}
         />
         <Stack.Screen
+          name='Registration'
+          component={Registration}
+        />
+        <Stack.Screen
           name="My Application"
           component={FirstScreen}
           options={({route, navigation}) => ({
             headerRight: () => (
-              <Logout navigation={navigation} />
+              <Nav navigation={navigation} />
             ),
             headerStyle: {
               backgroundColor: '#892b2f',
@@ -40,11 +45,11 @@ const App = () => {
           component={SecondScreen}
           options={({route, navigation}) => ({
             headerRight: () => (
-              <Logout navigation={navigation} />
+              <Nav navigation={navigation} />
             ),
             headerBackTitle: 'Take me back',
             headerRight: () => (
-              <Logout />
+              <Nav />
             )
           })
         }

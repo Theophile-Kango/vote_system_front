@@ -1,6 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const apiUrl = "https://vote-system-api.herokuapp.com";
+
+const apiUrl = "http://localhost:3000";
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,
@@ -65,16 +66,19 @@ class Auth {
     return this.session;
   }
   signUp(userFields, confirmSuccessUrl) {
+    this.session = storage.getItem(storageKey);
+      
     return new Promise(async (resolve, reject) => {
+      const result = await this.session;
       try {
         const signUpResponse = await axios.post(
           this.apiAuthUrl,
           {
             ...userFields,
           },
-          { params: { confirm_success_url: confirmSuccessUrl } }
+          { headers: JSON.parse(result) }
+        
         );
-        this.setSession(signUpResponse.headers);
         resolve(signUpResponse);
       } catch (error) {
         reject(error);
@@ -103,6 +107,9 @@ class Auth {
     this.session = storage.getItem(storageKey);
     if (!this.session) throw "No active session";
     storage.removeItem(storageKey);
+
+    storage.removeItem("current-user");
+    
     const lastSession = this.session;
     this.session = undefined;
       
@@ -115,7 +122,7 @@ class Auth {
         resolve(logOutResponse.data);
         
       } catch (err) {
-        resolve("Error when delete server session but local was deleted");
+        resolve("Erreur lors de la suppression de la session du serveur mais la suppression du local a été effectuée");
       }
     });
   }
