@@ -41,7 +41,6 @@ const Registration = () => {
         <TextInput
           style={styles.input}
           placeholder='Matricule'
-          defaultValue={""}
           onChangeText={text => setMatricule(text)}
         />
 
