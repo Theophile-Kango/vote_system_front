@@ -7,6 +7,7 @@ import SecondScreen from './screens/SecondScreen';
 import Authentication from './screens/Authentication';
 import Registration from './screens/Registration';
 import Nav from './components/Nav';
+import NewDateVote from './screens/dateVotes/NewDateVote';
 
 const Stack = createStackNavigator()
 
@@ -21,6 +22,38 @@ const App = () => {
         <Stack.Screen
           name='Registration'
           component={Registration}
+          options={({route, navigation}) => ({
+              headerRight: () => (
+                <Nav navigation={navigation} />
+              ),
+              headerStyle: {
+                backgroundColor: '#892b2f',
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 30
+              }
+            })
+          }
+        />
+        <Stack.Screen
+          name='NewDateVote'
+          component={NewDateVote}
+          options={({route, navigation}) => ({
+              headerRight: () => (
+                <Nav navigation={navigation} />
+              ),
+              headerStyle: {
+                backgroundColor: '#892b2f',
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 30
+              }
+            })
+          }
         />
         <Stack.Screen
           name="My Application"
@@ -47,10 +80,7 @@ const App = () => {
             headerRight: () => (
               <Nav navigation={navigation} />
             ),
-            headerBackTitle: 'Take me back',
-            headerRight: () => (
-              <Nav />
-            )
+            headerBackTitle: 'Take me back'
           })
         }
         />

@@ -34,10 +34,16 @@ const Nav = ({ navigation }) => {
         onPress={() => logOutUser()}
       />
       { role === "admin" && 
-        <Button 
-          title="Enregistrer Utilisateur"
-          onPress={() => navigation.navigate("Registration")}
-        /> 
+        <>
+          <Button 
+            title="Enregistrer Utilisateur"
+            onPress={() => navigation.navigate("Registration")}
+          /> 
+          <Button 
+            title="Ajouter un vote"
+            onPress={() => navigation.navigate("NewDateVote")}
+          /> 
+        </>
         }
     </View>
   )

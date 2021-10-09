@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, InteractionManager } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-
-import Auth from '../modules/auth'
+import Auth from '../modules/auth';
 
 const Registration = () => {
-  const [matricule, setMatricule] = useState();
-  const [password, setPassword] = useState();
-  const [message, setMessage] = useState();
+  const [matricule, setMatricule] = useState("");
+  const [nom, setNom] = useState("");
+  const [postNom, setPostNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [role, setRole] = useState();
 
 
@@ -16,26 +18,27 @@ const Registration = () => {
   const signUpUser = () => { 
     auth.signUp(
         {
-            matricule,
-            password,
-            role: parseInt(role)
+          matricule,
+          nom,
+          post_nom: postNom,
+          prenom,
+          password,
+          role: parseInt(role)
         }
     )
-    .then(userDatas => {
-        setMessage(`Utilisateur ${JSON.parse(userDatas.config.data).matricule} créé avec succès`)
-        // .then(() =>{
-        //         navigation.navigate('My Application');
-        //     }
-        // );
+    .then(() => {
+      setMessage(`Utilisateur ${nom} ${postNom} ${prenom} créé avec succès`)
+      //navigation.navigate('My Application');
     })
     .catch(error => {
-        setMessage("Erreur enregistrement");
+      //setMessage("Erreur enregistrement");
+      console.log(error)
     });
     }
     
   return (
     <View>
-      { message && <Text>{message}</Text>}
+      { !!message && <Text>{message}</Text>}
       <>
         <Text>Creation Compte</Text>
         <TextInput
@@ -46,10 +49,29 @@ const Registration = () => {
 
         <TextInput
           style={styles.input}
+          placeholder='Nom'
+          onChangeText={text => setNom(text)}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder='Post nom'
+          onChangeText={text => setPostNom(text)}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder='Prenom'
+          onChangeText={text => setPrenom(text)}
+          value={prenom}
+        />
+
+        <TextInput
+          style={styles.input}
           placeholder='Password'
-          defaultValue={""}
           secureTextEntry={true}
           onChangeText={text => setPassword(text)}
+          value={password}
         />
 
         <Picker
