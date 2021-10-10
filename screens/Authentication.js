@@ -11,7 +11,7 @@ const Authentication = ({ navigation }) => {
   const storage = AsyncStorage;
   const currentUser = "current-user";
 
-  const auth = new Auth({ host: 'http://localhost:3000' })
+  const auth = new Auth({ host: "https://vote-system-api.herokuapp.com" })
   const authenticateUser = () => {
     auth.signIn(matricule, password).then(response => {
       navigation.navigate('My Application');

@@ -13,7 +13,7 @@ const Registration = () => {
   const [role, setRole] = useState();
 
 
-  const auth = new Auth({ host: 'http://localhost:3000' })
+  const auth = new Auth({ host: "https://vote-system-api.herokuapp.com" })
   
   const signUpUser = () => { 
     auth.signUp(

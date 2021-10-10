@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const apiUrl = "http://localhost:3000";
+const apiUrl = "https://vote-system-api.herokuapp.com";
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,

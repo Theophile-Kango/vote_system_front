@@ -1,107 +1,99 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import DateVote from './../../modules/dateVote';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const NewDateVote = () => {
-  const [dateDebut, setDateDebut] = useState("");
-  const [dateFin, setDateFin] = useState("");
+  
+  const [isDateDebutVisibility, setIsDateDebutVisibility] = useState(false);
+  const [isDateFinVisibility, setIsDateFinVisibility] = useState(false);
   const [message, setMessage] = useState("");
-  //const [date, setDate] = useState(new Date().toLocaleString());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [dateNow, setDateNow] = useState(new Date());
 
-  const onChangeDateDebut = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDateDebut(currentDate);
+  useEffect(() => {
+    let secTimer = setInterval( () => {
+      setDateNow(new Date())
+    },1000)
+
+    return () => clearInterval(secTimer);
+  }, []);
+  //const currentDate = new Date(dateNow.getTime() + dateNow.getTimezoneOffset() * 60000);
+  const [dateDebut, setDateDebut] = useState(dateNow);
+  const [dateFin, setDateFin] = useState(dateDebut);
+
+  const showDatePicker1 = () => {
+    setIsDateDebutVisibility(true);
   };
 
-  const onChangeDateFin = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDateFin(currentDate);
+  const hideDatePicker1 = () => {
+    setIsDateDebutVisibility(false);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
+  const showDatePicker2 = () => {
+    setIsDateFinVisibility(true);
   };
 
-  const showDatepicker = () => {
-    showMode('date');
+  const hideDatePicker2 = () => {
+    setIsDateFinVisibility(false);
   };
 
-  const showTimepicker = () => {
-    showMode('time');
+  const handleConfirmDebut = (date) => {
+    setDateDebut(date);
+    console.warn("A date has been picked: ", date);
+    hideDatePicker1();
   };
 
-  const dateVote = new DateVote({ host: 'http://localhost:3000' })
+  const handleConfirmFin = (date) => {
+    setDateFin(date);
+    console.warn("A date has been picked: ", date);
+    hideDatePicker2();
+  };
+
+  const dateVoteUrl = new DateVote({ host: "https://vote-system-api.herokuapp.com" });
   
   const createDateVote = () => { 
-    dateVote.newDateVote(
+    dateVoteUrl.newDateVote(
       {
         date_debut: dateDebut,
         date_fin: dateFin,
       }
     )
     .then(() => {
-      setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`)
-      //navigation.navigate('My Application');
+      setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`);
     })
     .catch(error => {
       setMessage("Erreur enregistrement");
+      console.warn(error)
     });
     }
     
   return (
-    <View>
+    <View style={{marginTop: 50}}>
       { !!message && <Text>{message}</Text>}
+      { <Text>{`La date debut est : ${dateDebut} et la date fin est ${dateFin}`}</Text> }
       <>
-        <Text>Ajouter une nouvelle date vote</Text>
-        <View>
+        <Text>Ajouter une nouvelle date vote</Text> 
           <View>
-            <Button onPress={showDatepicker} title="Choisissez une date debut vote" />
-          </View>
+          <Button title="Date et temps debut vote" onPress={showDatePicker1} />
+          <DateTimePickerModal
+            isVisible={isDateDebutVisibility}
+            mode="datetime"
+            minimumDate={dateDebut}
+            onConfirm={handleConfirmDebut}
+            onCancel={hideDatePicker1}
+          />
+          </View> 
           <View>
-            <Button onPress={showTimepicker} title="Choisissez le temps" />
-          </View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              timeZoneOffsetInSeconds={3600*2}
-              value={dateDebut}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              minimumDate={new Date().toLocaleString()}
-              onChange={onChangeDateDebut}
-            />
-            
-          )}
-        </View>
-
-        <View>
-          <View>
-            <Button onPress={showDatepicker} title="Choisissez la date fin vote" />
-          </View>
-          <View>
-            <Button onPress={showTimepicker} title="Choisissez le temps" />
-          </View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              timeZoneOffsetInSeconds={3600*2}
-              value={dateFin}
-              mode={mode}
-              is24Hour={true}
-              display="default"
+            <Button title="Date et temps fin vote" onPress={showDatePicker2} />
+            <DateTimePickerModal
+              isVisible={isDateFinVisibility}
+              mode="datetime"
               minimumDate={dateDebut}
-              onChange={onChangeDateFin}
+              onConfirm={handleConfirmFin}
+              onCancel={hideDatePicker2}
             />
-            
-          )}
-        </View>
+          </View>
+        
 
         <Button
           title="Enregistrer"

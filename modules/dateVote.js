@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const apiUrl = "http://localhost:3000";
+const apiUrl = "https://vote-system-api.herokuapp.com";
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,
@@ -18,7 +18,7 @@ class DateVote {
     this.roles = options.useRoles ? [] : undefined;
     this.apiUrl = `${options.host}${options.prefixUrl ? options.prefixUrl : ""
       }`;
-    this.apiNewDateVoteUrl = `${this.apiUrl}${options.authUrl ? options.authUrl : "/api/date_vote"
+    this.apiNewDateVoteUrl = `${this.apiUrl}${options.apiNewDateVoteUrl ? options.apiNewDateVoteUrl : "/api/date_vote"
       }`;
     axios.interceptors.response.use(
       (response) => {
@@ -59,7 +59,7 @@ class DateVote {
       const result = await this.session;
       try {
         const newDateVoteResponse = await axios.post(
-          this.apiAuthUrl,
+          this.apiNewDateVoteUrl,
           {
             ...fields,
           },
