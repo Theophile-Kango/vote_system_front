@@ -39,33 +39,35 @@ const NewDateVote = () => {
 
   const handleConfirmDebut = (date) => {
     setDateDebut(date);
-    console.warn("A date has been picked: ", date);
     hideDatePicker1();
   };
 
   const handleConfirmFin = (date) => {
     setDateFin(date);
-    console.warn("A date has been picked: ", date);
     hideDatePicker2();
   };
 
   const dateVoteUrl = new DateVote({ host: "https://vote-system-api.herokuapp.com" });
   
   const createDateVote = () => { 
-    dateVoteUrl.newDateVote(
-      {
-        date_debut: dateDebut,
-        date_fin: dateFin,
-      }
-    )
-    .then(() => {
-      setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`);
-    })
-    .catch(error => {
-      setMessage("Erreur enregistrement");
-      console.warn(error)
-    });
+    if(dateDebut >= dateFin){
+      setMessage("La date debut doit etre avant la date fin");
+    }else{
+      dateVoteUrl.newDateVote(
+        {
+          date_debut: dateDebut,
+          date_fin: dateFin,
+        }
+      )
+      .then(() => {
+        setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`);
+      })
+      .catch(error => {
+        setMessage("Erreur enregistrement");
+        console.warn(error)
+      });
     }
+  }
     
   return (
     <View style={{marginTop: 50}}>
@@ -78,7 +80,7 @@ const NewDateVote = () => {
           <DateTimePickerModal
             isVisible={isDateDebutVisibility}
             mode="datetime"
-            minimumDate={dateDebut}
+            minimumDate={dateNow}
             onConfirm={handleConfirmDebut}
             onCancel={hideDatePicker1}
           />
