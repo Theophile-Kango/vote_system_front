@@ -8,23 +8,25 @@ const Registration = () => {
   const [nom, setNom] = useState("");
   const [postNom, setPostNom] = useState("");
   const [prenom, setPrenom] = useState("");
+  const [promotion, setPromotion] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [role, setRole] = useState();
 
 
-  const auth = new Auth({ host: "https://vote-system-api.herokuapp.com" })
+  const auth = new Auth({ host: url })
   
   const signUpUser = () => { 
     auth.signUp(
-        {
-          matricule,
-          nom,
-          post_nom: postNom,
-          prenom,
-          password,
-          role: parseInt(role)
-        }
+      {
+        matricule,
+        nom,
+        post_nom: postNom,
+        prenom,
+        password,
+        role: parseInt(role),
+        promotion
+      }
     )
     .then(() => {
       setMessage(`Utilisateur ${nom} ${postNom} ${prenom} créé avec succès`)
@@ -64,6 +66,13 @@ const Registration = () => {
           placeholder='Prenom'
           onChangeText={text => setPrenom(text)}
           value={prenom}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder='Promotion'
+          onChangeText={text => setPromotion(text)}
+          value={promotion}
         />
 
         <TextInput

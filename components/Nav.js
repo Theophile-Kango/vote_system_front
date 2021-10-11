@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Auth from '../modules/auth';
+import { url } from '../modules/url';
 
 const Nav = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const [role, setRole] = useState("");
+
   const storage = AsyncStorage;
 
   useEffect(() => {
@@ -18,7 +20,7 @@ const Nav = ({ navigation }) => {
     });
   }
 
-  const auth = new Auth({ host: 'http://localhost:3000' });
+  const auth = new Auth({ host: url });
   const logOutUser = () => {
     auth.signOut().then(response => {
         navigation.navigate("Authentication");
@@ -44,7 +46,13 @@ const Nav = ({ navigation }) => {
             onPress={() => navigation.navigate("NewDateVote")}
           /> 
         </>
-        }
+      }
+      { role === "candidate" && 
+        <Button 
+          title="Ajouter description"
+          onPress={() => navigation.navigate("Candidat")}
+        />
+      }
     </View>
   )
 }

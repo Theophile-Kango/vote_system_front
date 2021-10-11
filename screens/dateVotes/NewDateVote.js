@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import DateVote from './../../modules/dateVote';
+import EndPoint from '../../modules/endPoints';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { url } from '../../modules/url';
 
 const NewDateVote = () => {
   
@@ -47,7 +48,7 @@ const NewDateVote = () => {
     hideDatePicker2();
   };
 
-  const dateVoteUrl = new DateVote({ host: "https://vote-system-api.herokuapp.com" });
+  const dateVoteUrl = new EndPoint({ host: url });
   
   const createDateVote = () => { 
     if(dateDebut >= dateFin){

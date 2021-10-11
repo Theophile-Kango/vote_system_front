@@ -8,6 +8,7 @@ import Authentication from './screens/Authentication';
 import Registration from './screens/Registration';
 import Nav from './components/Nav';
 import NewDateVote from './screens/dateVotes/NewDateVote';
+import Candidat from './screens/Candidat';
 
 const Stack = createStackNavigator()
 
@@ -40,6 +41,24 @@ const App = () => {
         <Stack.Screen
           name='NewDateVote'
           component={NewDateVote}
+          options={({route, navigation}) => ({
+              headerRight: () => (
+                <Nav navigation={navigation} />
+              ),
+              headerStyle: {
+                backgroundColor: '#892b2f',
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 30
+              }
+            })
+          }
+        />
+        <Stack.Screen
+          name='Candidat'
+          component={Candidat}
           options={({route, navigation}) => ({
               headerRight: () => (
                 <Nav navigation={navigation} />

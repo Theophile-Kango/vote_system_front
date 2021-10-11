@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import Auth from '../modules/auth'
+import { url } from "../modules/url";
+import Auth from '../modules/auth';
 
 const Authentication = ({ navigation }) => {
   const [matricule, setMatricule] = useState()
@@ -11,7 +11,7 @@ const Authentication = ({ navigation }) => {
   const storage = AsyncStorage;
   const currentUser = "current-user";
 
-  const auth = new Auth({ host: "https://vote-system-api.herokuapp.com" })
+  const auth = new Auth({ host: url })
   const authenticateUser = () => {
     auth.signIn(matricule, password).then(response => {
       navigation.navigate('My Application');

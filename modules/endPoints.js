@@ -1,7 +1,8 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { url } from './url'
 
-const apiUrl = "https://vote-system-api.herokuapp.com";
+const apiUrl = url;
   process.env.NODE_ENV === "development" && "http://localhost:3000";
 const defaultOptions = {
   host: apiUrl,
@@ -12,13 +13,15 @@ const defaultOptions = {
 const storage = AsyncStorage;
 const storageKey = "auth-storage";
 
-class DateVote {
+class EndPoint {
   constructor(options) {
     this.options = { ...defaultOptions, ...options };
     this.roles = options.useRoles ? [] : undefined;
     this.apiUrl = `${options.host}${options.prefixUrl ? options.prefixUrl : ""
       }`;
     this.apiNewDateVoteUrl = `${this.apiUrl}${options.apiNewDateVoteUrl ? options.apiNewDateVoteUrl : "/api/date_vote"
+      }`;
+    this.apiNewCandidateUrl = `${this.apiUrl}${options.apiNewCandidatUrl ? options.apiNewCandidatUrl : "/api/candidate"
       }`;
     axios.interceptors.response.use(
       (response) => {
@@ -73,6 +76,27 @@ class DateVote {
     });
   }
 
+  newCandidate(fields) {
+    this.session = storage.getItem(storageKey);
+      
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const newCandidateResponse = await axios.post(
+          this.apiNewCandidateUrl,
+          {
+            ...fields,
+          },
+          { headers: JSON.parse(result) }
+        
+        );
+        resolve(newCandidateResponse);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
 }
 
-export default DateVote;
+export default EndPoint;
