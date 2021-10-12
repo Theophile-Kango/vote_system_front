@@ -10,6 +10,8 @@ const Candidat = () => {
   const [description, setDescription] = useState();
   const [message, setMessage] = useState();
   const [userId, setUserId] = useState();
+  const [base64Img, setBase64Img] = useState();
+
   const storage = AsyncStorage;
 
   const endPoint = new EndPoint({ host: url });
@@ -35,68 +37,34 @@ const Candidat = () => {
     });
   }
 
-  
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [6, 6],
-      base64: true,
-      quality: 1,
+      base64: true
     });
 
     if (!result.cancelled) {
-      //const imgEncode = base64.encode(result.uri);
-      setImage(result.uri); 
-      //console.log(result.uri)
-      //console.warn(result.base64);
-      //const data = new FormData();
-     // data.append('name',{
-          //name: image, /* name your image whatever you want*/
-          //type: 'image/jpeg', /* type of image that you're uploading*/
-          //uri: result.uri /*data, file or image from ImagePicker here you should pass uri data but not all data from ImagePicker*/
-      //})
-      // let uriParts = image.split('.');
-      // let fileType = uriParts[uriParts.length - 1];
+      setImage(result.uri);
+      setBase64Img(`data:image/jpg;base64,${result.base64}`);
     }
-  };
+  }
 
-  
   const createCandidate = () => {
 
     if (image != null) {
       endPoint.newCandidate(
         {
           user_id: userId,
-          image,
+          image: base64Img,
           description
         }
       ).then(() => {
         setMessage(`image et description ajoutées avec succès`);
       }).catch(error => {
         setMessage("Erreur enregistrement");
-        console.warn(error)
       });
-      //const data = new FormData();
-      //data.append('image', fileToUpload);
-      //data.append('description', description);
-      // Please change file upload URL
-      // let res = await fetch(
-      //   'http://localhost/upload.php',
-      //   {
-      //     method: 'post',
-      //     body: data,
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data; ',
-      //     },
-      //   }
-      // );
-    //   let responseJson = await res.json();
-    //   if (responseJson.status == 1) {
-    //     setMessage('Upload Successful');
-    //   }
     } else {
-       // If no file selected the show alert
       setMessage('Please Select File first');
     }
   }
@@ -129,7 +97,6 @@ const Candidat = () => {
           onPress={() => createCandidate()}
         />
       </>
-
     </View>
   )
 }
