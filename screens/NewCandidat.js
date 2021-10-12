@@ -5,12 +5,14 @@ import * as ImagePicker from 'expo-image-picker';
 import EndPoint from '../modules/endPoints';
 import { url } from '../modules/url';
 
-const NewCandidat = () => {
+const NewCandidat = ({ navigation }) => {
   const [image, setImage] = useState(null)
   const [description, setDescription] = useState();
   const [message, setMessage] = useState();
-  const [userId, setUserId] = useState();
+  const [user, setUser] = useState({});
+  const [userCandidate, setUserCandidate] = useState({});
   const [base64Img, setBase64Img] = useState();
+  const [promotion, setPromotion] = useState("");
 
   const storage = AsyncStorage;
 
@@ -33,7 +35,7 @@ const NewCandidat = () => {
   
   const getCurrentUser = () => {
     storage.getItem("current-user").then(user => {
-        setUserId(JSON.parse(user).id);
+        setUser(JSON.parse(user));
     });
   }
 
@@ -55,12 +57,15 @@ const NewCandidat = () => {
     if (image != null) {
       endPoint.newCandidate(
         {
-          user_id: userId,
+          user_id: user.id,
           image: base64Img,
+          promotion,
           description
         }
-      ).then(() => {
-        setMessage(`image et description ajoutées avec succès`);
+      ).then(res => {
+        setUserCandidate({...user, candidat: res.data});
+        storage.setItem("current-user",userCandidate);
+        navigation.navigate('Accueil');
       }).catch(error => {
         setMessage("Erreur enregistrement");
       });
@@ -86,6 +91,13 @@ const NewCandidat = () => {
           numberOfLines={10}
           placeholder='Description'
           onChangeText={text => setDescription(text)}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder='Promotion'
+          onChangeText={text => setPromotion(text)}
+          value={promotion}
         />
 
         <Button

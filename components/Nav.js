@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, View } from 'react-native';
+import { StyleSheet, Button, View, Text } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Auth from '../modules/auth';
 import { url } from '../modules/url';
 
 const Nav = ({ navigation }) => {
   const [message, setMessage] = useState("");
-  const [role, setRole] = useState("");
+  const [user, setUser] = useState({});
 
   const storage = AsyncStorage;
 
   useEffect(() => {
     getCurrentUser();
-  },[role])
+  },[])
   
   const getCurrentUser = () => {
     storage.getItem("current-user").then(user => {
-        setRole(JSON.parse(user).role)
+      setUser(JSON.parse(user))
     });
   }
 
@@ -35,7 +35,7 @@ const Nav = ({ navigation }) => {
         color='red'
         onPress={() => logOutUser()}
       />
-      { role === "admin" && 
+      { user.role === "admin" && 
         <>
           <Button 
             title="Enregistrer Utilisateur"
@@ -47,7 +47,7 @@ const Nav = ({ navigation }) => {
           /> 
         </>
       }
-      { role === "candidate" && 
+      { user.role === "candidate" && 
         <Button 
           title="Ajouter description"
           onPress={() => navigation.navigate("NewCandidat")}
