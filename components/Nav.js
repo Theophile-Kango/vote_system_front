@@ -50,7 +50,7 @@ const Nav = ({ navigation }) => {
       { role === "candidate" && 
         <Button 
           title="Ajouter description"
-          onPress={() => navigation.navigate("Candidat")}
+          onPress={() => navigation.navigate("NewCandidat")}
         />
       }
     </View>

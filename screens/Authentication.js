@@ -14,7 +14,7 @@ const Authentication = ({ navigation }) => {
   const auth = new Auth({ host: url })
   const authenticateUser = () => {
     auth.signIn(matricule, password).then(response => {
-      navigation.navigate('My Application');
+      navigation.navigate('Accueil');
       storage.setItem(currentUser, JSON.stringify(response.data));
     }).catch(error => {
       setMessage("Erreur d'identification, vérifiez votre matricule et votre mot de passe")

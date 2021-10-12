@@ -8,26 +8,26 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-const Article = ({ article, navigation }) => {
+const Candidats = ({ candidat, navigation }) => {
   return (
     <TouchableOpacity
-      testID={`article-${article.id}`}
+      testID={`candidat-${candidat.id}`}
       onPress={() => {
-        navigation.navigate('Second Screen', { article: article })
+        navigation.navigate('Candidat', { candidat: candidat })
       }}
     >
       <Image
-        source={{ uri: article.image }}
+        source={{ uri: candidat.image }}
         style={styles.image}
       />
       <View style={styles.card}>
-        <Text testID="title" style={styles.title}>{article.title}</Text>
+        <Text testID="title" style={styles.title}>{candidat.description}</Text>
       </View>
     </TouchableOpacity>
   )
 }
 
-export default Article
+export default Candidats;
 
 const styles = StyleSheet.create({
   card: {
