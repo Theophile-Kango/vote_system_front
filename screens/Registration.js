@@ -46,6 +46,7 @@ const Registration = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       { !!message && <Error message={message} />}
+      <Text style={styles.header}>Système de vote en ligne</Text>
       <View style={styles.connexion}>
         <Text style={[styles.text, styles.commun]}>Creation Compte</Text>
         <TextInput
