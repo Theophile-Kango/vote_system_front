@@ -33,19 +33,19 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name='Registration'
+          name='Enregistrement'
           component={Registration}
           options={({route, navigation}) => ({
               headerRight: () => (
                 <Nav navigation={navigation} />
               ),
               headerStyle: {
-                backgroundColor: '#892b2f',
+                backgroundColor: '#317AFF',
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 30
+                fontSize: 15
               }
             })
           }
@@ -58,12 +58,12 @@ const App = () => {
                 <Nav navigation={navigation} />
               ),
               headerStyle: {
-                backgroundColor: '#892b2f',
+                backgroundColor: '#317AFF',
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 30
+                fontSize: 20
               }
             })
           }
@@ -76,12 +76,12 @@ const App = () => {
                 <Nav navigation={navigation} />
               ),
               headerStyle: {
-                backgroundColor: '#892b2f',
+                backgroundColor: '#317AFF',
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 30
+                fontSize: 20
               }
             })
           }
@@ -94,12 +94,12 @@ const App = () => {
                 <Nav navigation={navigation} />
               ),
               headerStyle: {
-                backgroundColor: '#892b2f',
+                backgroundColor: '#317AFF',
               },
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 30
+                fontSize: 20
               }
             })
           }
@@ -111,13 +111,14 @@ const App = () => {
             headerRight: () => (
               <Nav navigation={navigation} />
             ),
+            headerLeft: ()=> null,
             headerStyle: {
-              backgroundColor: '#892b2f',
+              backgroundColor: '#317AFF',
             },
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 30
+              fontSize: 20
             }
           })
           }
@@ -129,7 +130,14 @@ const App = () => {
             headerRight: () => (
               <Nav navigation={navigation} />
             ),
-            headerBackTitle: 'Take me back'
+            headerStyle: {
+              backgroundColor: '#317AFF',
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20
+            }
           })
         }
         />

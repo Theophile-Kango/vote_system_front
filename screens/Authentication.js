@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, Image } from 'react-native';
-import Error from './../components/Error';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Error from './../components/Error';
 import { url } from "../modules/url";
 import Auth from '../modules/auth';
 
@@ -19,6 +19,7 @@ const Authentication = ({ navigation }) => {
     auth.signIn(matricule, password).then(response => {
       navigation.navigate('Accueil');
       storage.setItem(currentUser, JSON.stringify(response.data));
+      setIsLoading(false);
     }).catch(error => {
       setIsLoading(false);
       setMessage("Erreur d'identification, vérifiez votre matricule et votre mot de passe")

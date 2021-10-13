@@ -17,7 +17,7 @@ export default Error;
 const styles = StyleSheet.create({
   error: {
     color: '#fff', 
-    backgroundColor: 'red', 
+    backgroundColor: '#d9534f', 
     textAlign: 'center', 
     textAlignVertical: 'center',
     width: '90%',
