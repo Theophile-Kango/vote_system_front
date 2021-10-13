@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
-//import{ Vote} from '../assets/vote.jpg'
+import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, Image } from 'react-native';
+import Error from './../components/Error';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { url } from "../modules/url";
 import Auth from '../modules/auth';
@@ -9,15 +9,18 @@ const Authentication = ({ navigation }) => {
   const [matricule, setMatricule] = useState()
   const [password, setPassword] = useState();
   const [message, setMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const storage = AsyncStorage;
   const currentUser = "current-user";
 
   const auth = new Auth({ host: url })
   const authenticateUser = () => {
+    setIsLoading(true);
     auth.signIn(matricule, password).then(response => {
       navigation.navigate('Accueil');
       storage.setItem(currentUser, JSON.stringify(response.data));
     }).catch(error => {
+      setIsLoading(false);
       setMessage("Erreur d'identification, vérifiez votre matricule et votre mot de passe")
     })
   }
@@ -27,7 +30,7 @@ const Authentication = ({ navigation }) => {
       resizeMode='cover'
       source={require('./../assets/vote.png')}
     >
-      { message && <Text>{message}</Text>}
+      { message && <Error message={message} />}
       <Text style={styles.header}>Système de vote en ligne</Text>
       <View style={styles.connexion}>
         <Text style={[styles.text, styles.commun]}>Connexion</Text>
@@ -48,7 +51,16 @@ const Authentication = ({ navigation }) => {
             style={[styles.button, styles.commun]}
             onPress={() => authenticateUser()}
           >
-          <Text style={{color: '#fff'}}>Se connecter</Text>
+          {isLoading ? 
+            <Image
+              source={require('./../assets/loaderimg.gif')}
+              style={styles.image}
+            />
+            :
+            <Text style={{color: '#fff'}}>
+              Se connecter
+            </Text>
+          }
         </TouchableOpacity>
       </View>
 
@@ -76,6 +88,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22
+  },
+  image: {
+    width: 45,
+    height: 45
   },
   connexion: {
     width: '90%',
