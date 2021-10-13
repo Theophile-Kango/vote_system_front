@@ -28,6 +28,9 @@ const App = () => {
         <Stack.Screen
           name='Authentication'
           component={Authentication}
+          options={{
+            headerShown: false
+          }}
         />
         <Stack.Screen
           name='Registration'
