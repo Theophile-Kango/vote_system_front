@@ -1,19 +1,47 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  Dimensions,
-  TouchableOpacity
-} from 'react-native'
+} from 'react-native';
+import { url } from "../modules/url";
+import { getCandidat } from '../helpers/getCandidat';
+import EndPoint from '../modules/endPoints';
 
 const Candidats = ({ candidat, navigation }) => {
+
+  const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState([]);
+
+  const endPoint = new EndPoint({ host: url });
+
+  useEffect(() => {
+    usersList();
+  },[]);
+
+  const usersList = () => {
+    endPoint.getUsers().then((res) => {
+      setUsers(res.data)
+    }).catch(error => {
+      console.log(error)
+    });
+  }
+
+  const { nom, post_nom, prenom } = getCandidat(candidat.user_id, users);
+
   return (
     <View
       testID={`candidat-${candidat.id}`}
       style={styles.container}
     >
+      {!!users &&
+        <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
+          <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
+            {`${nom.toUpperCase()} ${post_nom.toUpperCase()} ${prenom.toUpperCase()}`}
+          </Text>
+        </View>
+      }
       <Image
         source={{ uri: candidat.image }}
         style={styles.image}
@@ -25,9 +53,9 @@ const Candidats = ({ candidat, navigation }) => {
             navigation.navigate('Candidat', { candidat: candidat })
           }} 
             testID="title" 
-            style={styles.title
-          }>
-            {candidat.description.split('').slice(0, 20).join("")}...
+            style={styles.title}
+          >
+            {candidat.description.split('').slice(0, 100).join("")} ...
           </Text>
       </View>
     </View>

@@ -25,6 +25,8 @@ class EndPoint {
       }`;
     this.apiGetCandidatesUrl = `${this.apiUrl}${options.apiGetCandidatesUrl ? options.getCandidatesResponse : "/api/candidate"
       }`;
+    this.apiGetUsersUrl = `${this.apiUrl}${options.apigetUsersResponse ? options.apigetUsersResponse : "/api/list_users"
+      }`;
     axios.interceptors.response.use(
       (response) => {
         if (Array.isArray(response.data)) {
@@ -111,6 +113,24 @@ class EndPoint {
         
         );
         resolve(getCandidatesResponse);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getUsers() {
+    this.session = storage.getItem(storageKey);
+      
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const getUsersResponse = await axios.get(
+          this.apiGetUsersUrl,
+          { headers: JSON.parse(result) }
+        
+        );
+        resolve(getUsersResponse);
       } catch (error) {
         reject(error);
       }
