@@ -10,44 +10,52 @@ import {
 
 const Candidats = ({ candidat, navigation }) => {
   return (
-    <TouchableOpacity
+    <View
       testID={`candidat-${candidat.id}`}
-      onPress={() => {
-        navigation.navigate('Candidat', { candidat: candidat })
-      }}
+      style={styles.container}
     >
       <Image
         source={{ uri: candidat.image }}
         style={styles.image}
+        resizeMode='contain'
       />
       <View style={styles.card}>
-        <Text testID="title" style={styles.title}>{candidat.description}</Text>
+        <Text 
+          onPress={() => {
+            navigation.navigate('Candidat', { candidat: candidat })
+          }} 
+            testID="title" 
+            style={styles.title
+          }>
+            {candidat.description.split('').slice(0, 20).join("")}...
+          </Text>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 
 export default Candidats;
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20
+  },
   card: {
-    position: 'absolute',
-    width: Dimensions.get('window').width,
     padding: 7,
     paddingLeft: 10,
     paddingRight: 8,
-    bottom: 8,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "#fff",
   },
   title: {
-    fontSize: 22,
+    fontSize: 15,
     paddingBottom: 10,
-    color: 'white'
+    color: '#454545'
   },
 
   image: {
-    height: 250,
-    width: Dimensions.get('window').width,
-
+    width: '100%',
+    height: 320
   }
 })

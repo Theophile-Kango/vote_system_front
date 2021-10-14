@@ -41,10 +41,11 @@ export default Accueil;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center'
+    width: '100%',
+    backgroundColor: '#ccc',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingBottom: 20,
   },
-  header: {
-    fontSize: 30
-  }
 });
