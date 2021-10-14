@@ -12,7 +12,12 @@ import EndPoint from '../modules/endPoints';
 const Candidats = ({ candidat, navigation }) => {
 
   const [users, setUsers] = useState([]);
-  const [message, setMessage] = useState([]);
+  const initialCandidat = {
+    nom: '',
+    post_nom: '',
+    prenom: ''
+  }
+  const [currentCandidat, setCurrentCandidat] = useState(initialCandidat);
 
   const endPoint = new EndPoint({ host: url });
 
@@ -23,12 +28,13 @@ const Candidats = ({ candidat, navigation }) => {
   const usersList = () => {
     endPoint.getUsers().then((res) => {
       setUsers(res.data)
+      setCurrentCandidat(getCandidat(candidat.user_id, res.data))
     }).catch(error => {
       console.log(error)
     });
   }
 
-  const { nom, post_nom, prenom } = getCandidat(candidat.user_id, users);
+  const { nom, post_nom, prenom } = currentCandidat;
 
   return (
     <View
@@ -50,7 +56,7 @@ const Candidats = ({ candidat, navigation }) => {
       <View style={styles.card}>
         <Text 
           onPress={() => {
-            navigation.navigate('Candidat', { candidat: candidat })
+            navigation.navigate('Candidat', { candidat: candidat, nom: nom, post_nom: post_nom, prenom: prenom })
           }} 
             testID="title" 
             style={styles.title}
