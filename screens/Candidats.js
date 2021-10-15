@@ -9,7 +9,7 @@ import { url } from "../modules/url";
 import { getCandidat } from '../helpers/getCandidat';
 import EndPoint from '../modules/endPoints';
 
-const Candidats = ({ candidat, navigation }) => {
+const Candidats = ({ candidat, navigation, message }) => {
 
   const [users, setUsers] = useState([]);
   const initialCandidat = {
@@ -23,7 +23,7 @@ const Candidats = ({ candidat, navigation }) => {
 
   useEffect(() => {
     usersList();
-  },[]);
+  },[currentCandidat]);
 
   const usersList = () => {
     endPoint.getUsers().then((res) => {
@@ -41,30 +41,35 @@ const Candidats = ({ candidat, navigation }) => {
       testID={`candidat-${candidat.id}`}
       style={styles.container}
     >
-      {!!users &&
+      {!!users && !!currentCandidat &&
         <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
           <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
-            {`${nom.toUpperCase()} ${post_nom.toUpperCase()} ${prenom.toUpperCase()}`}
+            {nom && nom.toUpperCase()} {post_nom && post_nom.toUpperCase()} {prenom && prenom.toUpperCase()}
           </Text>
         </View>
       }
-      <Image
-        source={{ uri: candidat.image }}
-        style={styles.image}
-        resizeMode='contain'
+      {!!candidat && 
+        <Image
+          source={{ uri: candidat.image }}
+          style={styles.image}
+          resizeMode='contain'
       />
-      <View style={styles.card}>
-        <Text 
-          onPress={() => {
-            navigation.navigate('Candidat', { candidat: candidat, nom: nom, post_nom: post_nom, prenom: prenom })
-          }} 
-            testID="title" 
-            style={styles.title}
-          >
-            {candidat.description.split('').slice(0, 100).join("")} ...
+      }
+      {!!candidat && 
+        <View style={styles.card}>
+          <Text 
+            onPress={() => {
+              navigation.navigate('Candidat', { candidat: candidat, nom: nom, post_nom: post_nom, prenom: prenom })
+            }} 
+              testID="title" 
+              style={styles.title}
+            >
+            {candidat.description && candidat.description.split('').slice(0, 100).join("")} ...
           </Text>
+        </View>
+      }
       </View>
-    </View>
+      
   )
 }
 

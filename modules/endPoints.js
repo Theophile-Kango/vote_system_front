@@ -23,7 +23,11 @@ class EndPoint {
       }`;
     this.apiNewCandidateUrl = `${this.apiUrl}${options.apiNewCandidatUrl ? options.apiNewCandidatUrl : "/api/candidate"
       }`;
+    this.apiNewVoteUrl = `${this.apiUrl}${options.apiNewVoteUrl ? options.apiNewVoteUrl : "/api/vote"
+      }`;
     this.apiGetCandidatesUrl = `${this.apiUrl}${options.apiGetCandidatesUrl ? options.getCandidatesResponse : "/api/candidate"
+      }`;
+    this.apiGetVotesUrl = `${this.apiUrl}${options.apiGetVotesUrl ? options.getVotesResponse : "/api/vote"
       }`;
     this.apiGetUsersUrl = `${this.apiUrl}${options.apigetUsersResponse ? options.apigetUsersResponse : "/api/list_users"
       }`;
@@ -101,6 +105,27 @@ class EndPoint {
     });
   }
 
+  newVote(fields) {
+    this.session = storage.getItem(storageKey);
+      
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const newVoteResponse = await axios.post(
+          this.apiNewVoteUrl,
+          {
+            ...fields,
+          },
+          { headers: JSON.parse(result) }
+        
+        );
+        resolve(newVoteResponse);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   getCandidates() {
     this.session = storage.getItem(storageKey);
       
@@ -113,6 +138,24 @@ class EndPoint {
         
         );
         resolve(getCandidatesResponse);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getVotes() {
+    this.session = storage.getItem(storageKey);
+      
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const getVotesResponse = await axios.get(
+          this.apiGetVotesUrl,
+          { headers: JSON.parse(result) }
+        
+        );
+        resolve(getVotesResponse);
       } catch (error) {
         reject(error);
       }

@@ -4,7 +4,7 @@ import Candidats from './Candidats';
 import { url } from './../modules/url';
 import EndPoint from '../modules/endPoints';
 
-const Accueil = ({ navigation }) => {
+const Accueil = ({ navigation, successMessage }) => {
   const [candidats, setCandidats] = useState([]);
   const [message, setMessage] = useState([]);
   const endPoint = new EndPoint({ host: url });
@@ -24,6 +24,7 @@ const Accueil = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {!!successMessage && <Text>{successMessage}</Text>}
       {!!message && <Text>{message}</Text>}
       <FlatList
         data={candidats}
