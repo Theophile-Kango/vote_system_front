@@ -4,10 +4,15 @@ import {
   Text,
 } from 'react-native';
 
-const Error = ({message}) => {
+
+
+const Error = ({message, isVisible}) => {
+  
   return (
     <>
+      {!!isVisible && <>
         <Text style={styles.error}>{message}</Text>
+      </>}
     </>
   )
 }

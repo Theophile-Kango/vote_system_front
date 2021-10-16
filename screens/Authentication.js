@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState }  from 'react';
 import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Error from './../components/Error';
@@ -10,8 +10,23 @@ const Authentication = ({ navigation }) => {
   const [password, setPassword] = useState();
   const [message, setMessage] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const storage = AsyncStorage;
+
+  useEffect(() => {
+    flash();
+  }, []);
+
   const currentUser = "current-user";
+
+  const flash = () => {
+    const secTimer = setInterval( () => {
+      setIsVisible(false);
+    },10000);
+    setIsVisible(true);
+    return () => clearInterval(secTimer);
+  }
+
 
   const auth = new Auth({ host: url })
   const authenticateUser = () => {
@@ -22,6 +37,7 @@ const Authentication = ({ navigation }) => {
       setIsLoading(false);
     }).catch(error => {
       setIsLoading(false);
+      flash();
       setMessage("Erreur d'identification, vérifiez votre matricule et votre mot de passe")
     })
   }
@@ -31,7 +47,7 @@ const Authentication = ({ navigation }) => {
       resizeMode='cover'
       source={require('./../assets/vote.png')}
     >
-      { message && <Error message={message} />}
+      { message && <Error message={message} isVisible={isVisible} />}
       <Text style={styles.header}>Système de vote en ligne</Text>
       <View style={styles.connexion}>
         <Text style={[styles.text, styles.commun]}>Connexion</Text>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import  Error from './../../components/Error';
 import EndPoint from '../../modules/endPoints';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { url } from '../../modules/url';
@@ -10,6 +11,8 @@ const NewDateVote = () => {
   const [isDateFinVisibility, setIsDateFinVisibility] = useState(false);
   const [message, setMessage] = useState("");
   const [dateNow, setDateNow] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     let secTimer = setInterval( () => {
@@ -18,7 +21,7 @@ const NewDateVote = () => {
 
     return () => clearInterval(secTimer);
   }, []);
-  //const currentDate = new Date(dateNow.getTime() + dateNow.getTimezoneOffset() * 60000);
+
   const [dateDebut, setDateDebut] = useState(dateNow);
   const [dateFin, setDateFin] = useState(dateDebut);
 
@@ -46,13 +49,16 @@ const NewDateVote = () => {
   const handleConfirmFin = (date) => {
     setDateFin(date);
     hideDatePicker2();
+    setShow(true);
   };
 
   const dateVoteUrl = new EndPoint({ host: url });
   
   const createDateVote = () => { 
+    setIsLoading(true);
     if(dateDebut >= dateFin){
       setMessage("La date debut doit etre avant la date fin");
+      setIsLoading(false);
     }else{
       dateVoteUrl.newDateVote(
         {
@@ -62,22 +68,37 @@ const NewDateVote = () => {
       )
       .then(() => {
         setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`);
+        setIsLoading(false);
       })
       .catch(error => {
         setMessage("Erreur enregistrement");
+        setIsLoading(false);
         console.warn(error)
       });
     }
   }
     
   return (
-    <View style={{marginTop: 50}}>
-      { !!message && <Text>{message}</Text>}
-      { <Text>{`La date debut est : ${dateDebut} et la date fin est ${dateFin}`}</Text> }
+    <View style={styles.main}>
+      { !!message && <Error message={message} />}
+      <View style={styles.card, { backgroundColor: '#fff', paddingTop: 10} }>
+        <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'left', textAlignVertical: 'center', color: '#000' }]}>
+          Ajouter une nouvelle date vote 
+        </Text>
+      </View>
+      {!!show && <View style={styles.card, { backgroundColor: '#ddd', padding: 20} }>
+        <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'left', textAlignVertical: 'center', color: '#000' }]}>
+        {`La date debut vote est : ${dateDebut} et la date fin vote est ${dateFin}`}
+        </Text>
+      </View>}
       <>
-        <Text>Ajouter une nouvelle date vote</Text> 
           <View>
-          <Button title="Date et temps debut vote" onPress={showDatePicker1} />
+          <TouchableOpacity 
+            onPress={showDatePicker1} 
+            style={styles.commun}
+          >
+            <Text style={styles.input}>Choisissez la date et le temps debut vote</Text>
+          </TouchableOpacity>
           <DateTimePickerModal
             isVisible={isDateDebutVisibility}
             mode="datetime"
@@ -87,7 +108,12 @@ const NewDateVote = () => {
           />
           </View> 
           <View>
-            <Button title="Date et temps fin vote" onPress={showDatePicker2} />
+            <TouchableOpacity 
+              onPress={showDatePicker2} 
+              style={styles.commun}
+            >
+              <Text style={styles.input}>Choisissez la date et temps fin vote</Text>
+            </TouchableOpacity>
             <DateTimePickerModal
               isVisible={isDateFinVisibility}
               mode="datetime"
@@ -98,12 +124,21 @@ const NewDateVote = () => {
           </View>
         
 
-        <Button
-          title="Enregistrer"
-          type='solid'
-          color='#A9A9A9'
-          onPress={() => createDateVote()}
-        />
+          <TouchableOpacity
+            style={[styles.button, styles.commun]}
+            onPress={() => createDateVote()}
+          >
+          {isLoading ? 
+            <Image
+              source={require('./../../assets/loaderimg.gif')}
+              style={styles.image}
+            />
+            :
+            <Text style={{color: '#fff'}}>
+              Enregistrer
+            </Text>
+          }
+        </TouchableOpacity>
       </>
 
     </View>
@@ -113,11 +148,50 @@ const NewDateVote = () => {
 export default NewDateVote;
 
 const styles = StyleSheet.create({
-  input: {
-    width: 350,
+  main: {
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 20,
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20
+  },
+  card: {
+    padding: 7,
+    paddingLeft: 10,
+    paddingRight: 8,
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 15,
+    paddingBottom: 10,
+    color: '#454545'
+  },
+  image: {
+    width: 45,
+    height: 45
+  },
+  commun: {
+    width: 280,
     height: 55,
     marginBottom: 10,
     marginTop: 10,
-    backgroundColor: '#d3d3d3'
+  },
+  button: {
+    backgroundColor: '#5cb85c',
+    color: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  input: {
+    borderColor: '#ddd',
+    height: '100%',
+    color: '#fff',
+    textAlign: 'left',
+    textAlignVertical: 'center',
+    backgroundColor: '#317AFF',
+    borderWidth: 1,
+    padding: 10
   }
 })

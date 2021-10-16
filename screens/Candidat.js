@@ -22,7 +22,10 @@ const Candidat = (props, { navigation }) => {
       setUserId(JSON.parse(user).id);
       endPoint.getVotes().then(res => {
         setVotes(res.data);
-        setDoesVote(res.data.map(vote => vote.user_id).includes(userId));
+        const result = res.data.map(vote => vote.user_id).includes(userId);
+        console.warn("result");
+        //setDoesVote();
+       
       }).catch(err => console.warn(err))
       
     });
