@@ -17,7 +17,7 @@ const Accueil = ({ navigation, successMessage }) => {
     endPoint.getCandidates().then((res) => {
       setCandidats(res.data)
     }).catch(error => {
-      setMessage(error);
+      console.warn(error)
     });
   }
   

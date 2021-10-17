@@ -4,23 +4,21 @@ import {
   Text,
 } from 'react-native';
 
-const Error = ({message, isVisible}) => {
+const Success = ({message}) => {
   
   return (
     <>
-      {!!isVisible && <>
         <Text style={styles.error}>{message}</Text>
-      </>}
     </>
   )
 }
 
-export default Error;
+export default Success;
 
 const styles = StyleSheet.create({
   error: {
     color: '#fff', 
-    backgroundColor: '#d9534f', 
+    backgroundColor: '#5cb85c', 
     textAlign: 'center', 
     textAlignVertical: 'center',
     width: '90%',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import  Error from './../../components/Error';
+import  Success from './../../components/Success';
 import EndPoint from '../../modules/endPoints';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { url } from '../../modules/url';
@@ -67,7 +67,7 @@ const NewDateVote = () => {
         }
       )
       .then(() => {
-        setMessage(`Date debut vote: ${dateDebut}, date fin vote: ${dateFin} ajouté avec succès`);
+        setMessage(`Dates ajoutées avec succès`);
         setIsLoading(false);
       })
       .catch(error => {
@@ -80,7 +80,7 @@ const NewDateVote = () => {
     
   return (
     <View style={styles.main}>
-      { !!message && <Error message={message} />}
+      { !!message && <Success message={message} />}
       <View style={styles.card, { backgroundColor: '#fff', paddingTop: 10} }>
         <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'left', textAlignVertical: 'center', color: '#000' }]}>
           Ajouter une nouvelle date vote 
