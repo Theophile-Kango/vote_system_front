@@ -11,6 +11,7 @@ import NewDateVote from './screens/dateVotes/NewDateVote';
 import Candidat from './screens/Candidat';
 //import Route from './components/Route'
 import NewCandidat from './screens/NewCandidat';
+import Users from './screens/Users';
 
 const Stack = createStackNavigator()
 
@@ -126,6 +127,24 @@ const App = () => {
         <Stack.Screen
           name='Candidat'
           component={Candidat}
+          options={({route, navigation}) => ({
+            headerRight: () => (
+              <Nav navigation={navigation} />
+            ),
+            headerStyle: {
+              backgroundColor: '#317AFF',
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20
+            }
+          })
+        }
+        />
+        <Stack.Screen
+          name='Users'
+          component={Users}
           options={({route, navigation}) => ({
             headerRight: () => (
               <Nav navigation={navigation} />

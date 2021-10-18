@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
-import  Success from './../../components/Success';
 import EndPoint from '../../modules/endPoints';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { url } from '../../modules/url';

@@ -21,6 +21,8 @@ class EndPoint {
       }`;
     this.apiNewDateVoteUrl = `${this.apiUrl}${options.apiNewDateVoteUrl ? options.apiNewDateVoteUrl : "/api/date_vote"
       }`;
+    this.deleteUserUrl = `${this.apiUrl}${options.deleteUserUrl ? options.deleteUserUrl : "/auth"
+      }`;
     this.apiGetDateVotesUrl = `${this.apiUrl}${options.apiGetDateVotesUrl ? options.apiGetDateVotesUrl : "/api/date_vote"
       }`;
     this.apiNewCandidateUrl = `${this.apiUrl}${options.apiNewCandidatUrl ? options.apiNewCandidatUrl : "/api/candidate"
@@ -86,6 +88,44 @@ class EndPoint {
       }
     });
   }
+
+  deleteUser(user) {
+    this.session = storage.getItem(storageKey);
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const deleteUser = await axios.delete(this.deleteUserUrl, {
+            headers: JSON.parse(result),
+            data: { user }
+          }, 
+        );
+        //console.log(user)
+        resolve(deleteUser);
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+    // return new Promise(async (resolve, reject) => {
+    //   const result = await this.session;
+    //   try {
+    //     const removeUser = await axios.delete(
+    //       this.deleteUserUrl,
+    //       {
+    //         ...user,
+    //       },
+    //       { headers: JSON.parse(result) }
+        
+    //     );
+    //     resolve(removeUser);
+    //   } catch (error) {
+    //     reject(error);
+    //   }
+    
+    // })
+  }
+
+  
 
   newCandidate(fields) {
     this.session = storage.getItem(storageKey);

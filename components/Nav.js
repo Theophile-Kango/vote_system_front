@@ -56,6 +56,12 @@ const Nav = ({ navigation }) => {
           >
             <Fontisto name="date" style={{textAlign: 'center'}} size={24} color="#fff" />
           </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate("Users")}
+            style={[styles.date, styles.commun]}
+          >
+            <FontAwesome5 name="users" style={{textAlign: 'center'}} size={24} color="#fff" />
+          </TouchableOpacity>
         </>
       }
       { user.role === "candidate" && 

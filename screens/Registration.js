@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Error from '../components/Error';
+import EndPoint from '../modules/endPoints';
 import Auth from '../modules/auth';
 import { url } from '../modules/url';
 
@@ -13,39 +14,53 @@ const Registration = ({navigation}) => {
   const [promotion, setPromotion] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [role, setRole] = useState();
+  const [role, setRole] = useState("");
+  const [dateVotes, setDateVotes] = useState([]);
+  const [dateVote, setDateVote] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const auth = new Auth({ host: url })
+  const auth = new Auth({ host: url });
+  const endPoint = new EndPoint({ host: url })
+
+  useEffect(() => { getDateVote() },[]);
+
+  const getDateVote = () => {
+    endPoint.getDateVotes().then(res => setDateVotes(res.data))
+  }
+
   
   const signUpUser = () => { 
-    auth.signUp(
-      {
-        matricule,
-        nom,
-        post_nom: postNom,
-        prenom,
-        password,
-        role: parseInt(role),
-        promotion
-      }
-    )
-    .then(() => {
-      setMessage(`Utilisateur ${nom} ${postNom} ${prenom} créé avec succès`);
-      setIsLoading(false);
-      navigation.navigate('Accueil');
-    })
-    .catch(error => {
-      setMessage("Erreur enregistrement");
-      setIsLoading(false);
-      console.log(error)
-    });
+    if([matricule, nom, postNom, password, role, dateVote].includes("")){
+      alert("Les champs matricule, nom, post nom, mot de passe et date vote doivent etre remplis");
+    }else{
+      auth.signUp(
+        {
+          matricule,
+          nom,
+          post_nom: postNom,
+          prenom,
+          password,
+          role: parseInt(role),
+          date_vote_id: parseInt(dateVote),
+          promotion
+        }
+      )
+      .then(() => {
+        alert(`Utilisateur ${nom} ${postNom} ${prenom} créé avec succès`);
+        setIsLoading(false);
+        navigation.navigate('Accueil');
+      })
+      .catch(error => {
+        alert("Erreur enregistrement");
+        setIsLoading(false);
+        console.log(error)
+      });
     }
+  }
     
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      { !!message && <Error message={message} />}
       <Text style={styles.header}>Système de vote en ligne</Text>
       <View style={styles.connexion}>
         <Text style={[styles.text, styles.commun]}>Creation Compte</Text>
@@ -95,15 +110,28 @@ const Registration = ({navigation}) => {
             <Picker
               selectedValue={role}
               onValueChange={(itemValue, itemIndex) =>{
-                  setRole(itemValue)
-                  console.log(role)}
+                  setRole(itemValue)}
               }>
-            <Picker.Item label="selectionner un role" value="" />  
-            <Picker.Item label="Admin" value="1" />
-            <Picker.Item label="Cp" value="2" />
-            <Picker.Item label="candidat" value="3" />
-          </Picker>
-        </View>
+                <Picker.Item label="selectionner un role" value="" />  
+                <Picker.Item label="Admin" value="1" />
+                <Picker.Item label="Cp" value="2" />
+                <Picker.Item label="candidat" value="3" />
+            </Picker>
+          </View>
+          <View 
+            style={[styles.commun, styles.input, {justifyContent: 'center'}]}
+          >
+            <Picker
+              selectedValue={dateVote}
+              onValueChange={(itemValue, itemIndex) =>{
+                  setDateVote(itemValue)}
+              }>
+                <Picker.Item label="selectionner une date vote" value="" />
+                {!!dateVotes && dateVotes.map(element => (
+                  <Picker.Item label={element.title} key={element.id} value={String(element.id)} />
+                ))} 
+            </Picker>
+          </View>
 
         <TouchableOpacity
           style={[styles.button, styles.commun]}
