@@ -8,33 +8,11 @@ import Error from '../components/Error';
 const Candidat = (props, { navigation }) => {
 
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [doesVote, setDoesVote] = useState(false);
-  const [votes, setVotes] = useState([]);
 
   const { candidat, nom, post_nom, prenom } = props.route.params;
 
-  const storage = AsyncStorage;
-
-  const getCurrentUser = () => {
-    storage.getItem("current-user").then(user => {
-      setUser(JSON.parse(user));
-      endPoint.getVotes().then(res => {
-        setVotes(res.data);
-        const result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
-        setDoesVote(result)
-        //console.warn(result);
-        //setDoesVote();
-       
-      }).catch(err => console.warn(err))
-      
-    });
-  }
-
-  useEffect(() => {
-    getCurrentUser();
-  },[user, votes]);
+  const { user, votes, doesVote } = props.route.params;
 
   const endPoint = new EndPoint({ host: url });
 

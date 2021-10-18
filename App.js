@@ -64,7 +64,7 @@ const App = () => {
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 20
+                fontSize: 15
               }
             })
           }
@@ -82,7 +82,7 @@ const App = () => {
               headerTintColor: "#fff",
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize: 20
+                fontSize: 15
               }
             })
           }
@@ -119,7 +119,7 @@ const App = () => {
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 20
+              fontSize: 15
             }
           })
           }
@@ -137,7 +137,7 @@ const App = () => {
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 20
+              fontSize: 15
             }
           })
         }

@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Vote_system",
-    "slug": "Vote_system",
+    "name": "système de vote en ligne",
+    "slug": "vote_system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/favicon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.vote_system.online"
     },
     "web": {
       "favicon": "./assets/favicon.png"

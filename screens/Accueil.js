@@ -1,43 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Candidats from './Candidats';
 import { url } from './../modules/url';
 import EndPoint from '../modules/endPoints';
 
 const Accueil = ({ navigation, successMessage }) => {
   const [candidats, setCandidats] = useState([]);
-  const [listCandidat, setListCandidat] = useState([]);
   const [message, setMessage] = useState([]);
-  const [users, setUsers] = useState([]);
-
-  const [currentUser, setCurrentUser] = useState({});
   const endPoint = new EndPoint({ host: url });
 
-  const storage = AsyncStorage;
-
   useEffect(() => {
-    getCurrentUser();
-    //candidatList();
-   // usersList();
+    candidatList();
   },[]);
 
-  const getCurrentUser = () => {
-    storage.getItem("current-user").then(user => {
-       setCurrentUser(JSON.parse(user));
-    });
+  const candidatList = () => {
     endPoint.getCandidates().then((res) => {
       setCandidats(res.data)
     }).catch(error => {
       console.warn(error)
     });
-    endPoint.getUsers().then((res) => {
-      setUsers(res.data)
-    }).catch(error => {
-      console.log(error)
-    });
   }
   
+
   return (
     <View style={styles.container}>
       {!!successMessage && <Text>{successMessage}</Text>}

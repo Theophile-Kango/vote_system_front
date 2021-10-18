@@ -5,11 +5,14 @@ import {
   View,
   Image,
 } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { url } from "../modules/url";
 import { getCandidat } from '../helpers/getCandidat';
 import EndPoint from '../modules/endPoints';
 
 const Candidats = ({ candidat, navigation, message }) => {
+
+  const storage = AsyncStorage;
 
   const [users, setUsers] = useState([]);
   const initialCandidat = {
@@ -19,6 +22,12 @@ const Candidats = ({ candidat, navigation, message }) => {
   }
   const [currentCandidat, setCurrentCandidat] = useState(initialCandidat);
 
+  const [user, setUser] = useState({});
+
+  const [doesVote, setDoesVote] = useState(false);
+
+  const [votes, setVotes] = useState([]);
+
   const endPoint = new EndPoint({ host: url });
 
   useEffect(() => {
@@ -26,11 +35,27 @@ const Candidats = ({ candidat, navigation, message }) => {
   },[currentCandidat]);
 
   const usersList = () => {
+    getCurrentUser();
     endPoint.getUsers().then((res) => {
       setUsers(res.data)
       setCurrentCandidat(getCandidat(candidat.user_id, res.data))
     }).catch(error => {
       console.log(error)
+    });
+  }
+
+  const getCurrentUser = () => {
+    storage.getItem("current-user").then(user => {
+      setUser(JSON.parse(user));
+      endPoint.getVotes().then(res => {
+        setVotes(res.data);
+        const result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
+        setDoesVote(result)
+        //console.warn(result);
+        //setDoesVote();
+       
+      }).catch(err => console.warn(err))
+      
     });
   }
 
@@ -59,7 +84,7 @@ const Candidats = ({ candidat, navigation, message }) => {
         <View style={styles.card}>
           <Text 
             onPress={() => {
-              navigation.navigate('Candidat', { candidat: candidat, nom: nom, post_nom: post_nom, prenom: prenom })
+              navigation.navigate('Candidat', { candidat: candidat, nom: nom, post_nom: post_nom, prenom: prenom, user: user, doesVote: doesVote, votes: votes })
             }} 
               testID="title" 
               style={styles.title}
