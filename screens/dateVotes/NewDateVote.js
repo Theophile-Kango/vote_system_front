@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
 import  Success from './../../components/Success';
 import EndPoint from '../../modules/endPoints';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -10,6 +10,7 @@ const NewDateVote = () => {
   const [isDateDebutVisibility, setIsDateDebutVisibility] = useState(false);
   const [isDateFinVisibility, setIsDateFinVisibility] = useState(false);
   const [message, setMessage] = useState("");
+  const [title, setTitle] = useState("");
   const [dateNow, setDateNow] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -56,31 +57,36 @@ const NewDateVote = () => {
   
   const createDateVote = () => { 
     setIsLoading(true);
-    if(dateDebut >= dateFin){
-      setMessage("La date debut doit etre avant la date fin");
+    if(title===""){ 
+      alert("Remplissez le champ tititre");
       setIsLoading(false);
     }else{
-      dateVoteUrl.newDateVote(
-        {
-          date_debut: dateDebut,
-          date_fin: dateFin,
-        }
-      )
-      .then(() => {
-        setMessage(`Dates ajoutées avec succès`);
+      if(dateDebut >= dateFin){
+        setMessage("La date debut doit etre avant la date fin");
         setIsLoading(false);
-      })
-      .catch(error => {
-        setMessage("Erreur enregistrement");
-        setIsLoading(false);
-        console.warn(error)
-      });
+      }else{
+        dateVoteUrl.newDateVote(
+          {
+            title: title,
+            date_debut: dateDebut,
+            date_fin: dateFin
+          }
+        )
+        .then(() => {
+          alert(`Dates ajoutées avec succès`);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          alert("Erreur enregistrement");
+          setIsLoading(false);
+          console.warn(error);
+        });
+      }
     }
   }
     
   return (
     <View style={styles.main}>
-      { !!message && <Success message={message} />}
       <View style={styles.card, { backgroundColor: '#fff', paddingTop: 10} }>
         <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'left', textAlignVertical: 'center', color: '#000' }]}>
           Ajouter une nouvelle date vote 
@@ -92,20 +98,25 @@ const NewDateVote = () => {
         </Text>
       </View>}
       <>
+        <TextInput
+          style={[styles.input, styles.commun, {backgroundColor: '#ddd', color: "#000"}]}
+          placeholder='Intitule du vote'
+          onChangeText={text => setTitle(text)}
+        />
           <View>
-          <TouchableOpacity 
-            onPress={showDatePicker1} 
-            style={styles.commun}
-          >
-            <Text style={styles.input}>Choisissez la date et le temps debut vote</Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDateDebutVisibility}
-            mode="datetime"
-            minimumDate={dateNow}
-            onConfirm={handleConfirmDebut}
-            onCancel={hideDatePicker1}
-          />
+            <TouchableOpacity 
+              onPress={showDatePicker1} 
+              style={styles.commun}
+            >
+              <Text style={styles.input}>Choisissez la date et le temps debut vote</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isDateDebutVisibility}
+              mode="datetime"
+              minimumDate={dateNow}
+              onConfirm={handleConfirmDebut}
+              onCancel={hideDatePicker1}
+            />
           </View> 
           <View>
             <TouchableOpacity 

@@ -21,6 +21,8 @@ class EndPoint {
       }`;
     this.apiNewDateVoteUrl = `${this.apiUrl}${options.apiNewDateVoteUrl ? options.apiNewDateVoteUrl : "/api/date_vote"
       }`;
+    this.apiGetDateVotesUrl = `${this.apiUrl}${options.apiGetDateVotesUrl ? options.apiGetDateVotesUrl : "/api/date_vote"
+      }`;
     this.apiNewCandidateUrl = `${this.apiUrl}${options.apiNewCandidatUrl ? options.apiNewCandidatUrl : "/api/candidate"
       }`;
     this.apiNewVoteUrl = `${this.apiUrl}${options.apiNewVoteUrl ? options.apiNewVoteUrl : "/api/vote"
@@ -31,6 +33,7 @@ class EndPoint {
       }`;
     this.apiGetUsersUrl = `${this.apiUrl}${options.apigetUsersResponse ? options.apigetUsersResponse : "/api/list_users"
       }`;
+
     axios.interceptors.response.use(
       (response) => {
         if (Array.isArray(response.data)) {
@@ -156,6 +159,24 @@ class EndPoint {
         
         );
         resolve(getVotesResponse);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getDateVotes() {
+    this.session = storage.getItem(storageKey);
+      
+    return new Promise(async (resolve, reject) => {
+      const result = await this.session;
+      try {
+        const getDateVotesResponse = await axios.get(
+          this.apiGetDateVotesUrl,
+          { headers: JSON.parse(result) }
+        
+        );
+        resolve(getDateVotesResponse);
       } catch (error) {
         reject(error);
       }
