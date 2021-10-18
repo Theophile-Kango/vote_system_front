@@ -8,9 +8,9 @@ import Error from '../components/Error';
 const Candidat = (props, { navigation }) => {
 
   const [message, setMessage] = useState("");
-  const [userId, setUserId] = useState();
+  const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [doesVote, setDoesVote] = useState(true);
+  const [doesVote, setDoesVote] = useState(false);
   const [votes, setVotes] = useState([]);
 
   const { candidat, nom, post_nom, prenom } = props.route.params;
@@ -19,11 +19,12 @@ const Candidat = (props, { navigation }) => {
 
   const getCurrentUser = () => {
     storage.getItem("current-user").then(user => {
-      setUserId(JSON.parse(user).id);
+      setUser(JSON.parse(user));
       endPoint.getVotes().then(res => {
         setVotes(res.data);
-        const result = res.data.map(vote => vote.user_id).includes(userId);
-        console.warn("result");
+        const result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
+        setDoesVote(result)
+        //console.warn(result);
         //setDoesVote();
        
       }).catch(err => console.warn(err))
@@ -33,7 +34,7 @@ const Candidat = (props, { navigation }) => {
 
   useEffect(() => {
     getCurrentUser();
-  },[userId, votes]);
+  },[user, votes]);
 
   const endPoint = new EndPoint({ host: url });
 
@@ -41,7 +42,7 @@ const Candidat = (props, { navigation }) => {
     setIsLoading(true);
     endPoint.newVote(
       {
-        user_id: userId,
+        user_id: user.id,
         candidat_id: candidat.id
       }
     ).then(res => {
@@ -57,6 +58,13 @@ const Candidat = (props, { navigation }) => {
   return (
     <View style={styles.main}>
       {!!message && <Error message={message} />}
+      {user.role === "admin" && 
+        <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
+        <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
+          {`${votes.filter(vote => vote.candidat_id === candidat.id).length} voix`}
+        </Text>
+      </View>
+      }
       <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
         <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
           {`${nom.toUpperCase()} ${post_nom.toUpperCase()} ${prenom.toUpperCase()}`}
