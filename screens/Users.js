@@ -40,15 +40,30 @@ const Users = ({ user, navigation }) => {
 
   const { matricule, nom, post_nom, prenom } = selectedUser;
   const deleteUser = (user) => {
+
+    Alert.alert(
+        "",
+        `Vous allez supprimer l'utilisateur ${user.nom}`,
+        [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => {
+                endPoint.deleteUser(user)
+                .then(() => {
+                    alert("Utilisateur supprime avec success");
+                    //const index = users.findIndex(x => x.id === user.id)
+                    setUsers(users.filter(us => us.id !== user.id))
+                })
+                .catch(error => console.log(error)) }
+            }
+          ],
+          { cancelable: false }
+    )
+    // Alert.alert()
     
-    alert(`Vous allez supprimer l'utilisateur ${user.nom}`)
-    endPoint.deleteUser(user)
-    .then(() => {
-        alert("Utilisateur supprime avec success");
-        //const index = users.findIndex(x => x.id === user.id)
-        setUsers(users.filter(us => us.id !== user.id))
-    })
-    .catch(error => console.log(error))
     
   }
 
@@ -62,7 +77,7 @@ const Users = ({ user, navigation }) => {
                 <DataTable.Header>
                     <DataTable.Title style={{flex: 2}}>Matricule</DataTable.Title>
                     <DataTable.Title style={{flex: 2}}>Nom</DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}></DataTable.Title>
+                    <DataTable.Title style={{flex: 2}}>Post Nom</DataTable.Title>
                     <DataTable.Title style={{flex: 1}}></DataTable.Title>
                 </DataTable.Header>
 
@@ -70,9 +85,7 @@ const Users = ({ user, navigation }) => {
                     <DataTable.Row key={user.id}>
                         <DataTable.Cell style={{flex: 2}}>{user.matricule}</DataTable.Cell>
                         <DataTable.Cell style={{flex: 2}}>{user.nom}</DataTable.Cell>
-                        <DataTable.Cell style={{flex: 1, justifyContent: 'center'}}>
-                            <FontAwesome5 name="user-edit" size={24} color="#0275d8" onPress={() => alert("edit user")} />
-                        </DataTable.Cell>
+                        <DataTable.Cell style={{flex: 2}}>{user.post_nom}</DataTable.Cell>
                         <DataTable.Cell style={{flex: 1, justifyContent: 'center'}} onPress={() => deleteUser(user)}>
                             <AntDesign name="deleteuser" size={24} color="#d9534f"  />
                         </DataTable.Cell>
