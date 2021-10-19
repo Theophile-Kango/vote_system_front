@@ -49,11 +49,11 @@ const Candidats = ({ candidat, navigation, message }) => {
       setUser(JSON.parse(user));
       endPoint.getVotes().then(res => {
         setVotes(res.data);
-        const result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
+        //console.warn(res.data)
+        const result = res.data.length >=1 ? res.data.map(vote => vote.user_id).includes(JSON.parse(user).id) : false;
         setDoesVote(result)
         //console.warn(result);
         //setDoesVote();
-       
       }).catch(err => console.warn(err))
       
     });

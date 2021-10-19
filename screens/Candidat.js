@@ -36,7 +36,7 @@ const Candidat = (props, { navigation }) => {
   return (
     <View style={styles.main}>
       {!!message && <Error message={message} />}
-      {user.role === "admin" && 
+      {votes.length >= 1 && user.role === "admin" && 
         <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
         <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
           {`${votes.filter(vote => vote.candidat_id === candidat.id).length} voix`}
