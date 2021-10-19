@@ -7,21 +7,35 @@ import {
 } from 'react-native';
 import { FontAwesome5, AntDesign } from '@expo/vector-icons'; 
 import { DataTable } from 'react-native-paper';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { url } from "../modules/url";
 import { getCandidat } from '../helpers/getCandidat';
 import EndPoint from '../modules/endPoints';
 
+
 const Users = ({ user, navigation }) => {
 
+  const storage = AsyncStorage;
   const [users, setUsers] = useState([]);
-  //const [user, setUser] = useState()
-  const initialUser = {
-    matricule: '',
-    nom: '',
-    post_nom: '',
-    prenom: ''
+  const [currentUser, setCurrentUser] = useState();
+  
+  useEffect(() => {
+    getCurrentUser();
+  },[]);
+
+  const getCurrentUser = () => {
+    storage.getItem("current-user").then(user => {
+      setCurrentUser(JSON.parse(user));
+      }).catch(err => console.warn(err));
   }
-  const [selectedUser, setSelectedUser] = useState(initialUser);
+
+  // const initialUser = {
+  //   matricule: '',
+  //   nom: '',
+  //   post_nom: '',
+  //   prenom: ''
+  // }
+  // const [selectedUser, setSelectedUser] = useState(initialUser);
 
   const endPoint = new EndPoint({ host: url });
 
@@ -38,7 +52,7 @@ const Users = ({ user, navigation }) => {
     });
   }
 
-  const { matricule, nom, post_nom, prenom } = selectedUser;
+  //const { matricule, nom, post_nom, prenom } = selectedUser;
   const deleteUser = (user) => {
 
     Alert.alert(
@@ -86,9 +100,9 @@ const Users = ({ user, navigation }) => {
                         <DataTable.Cell style={{flex: 2}}>{user.matricule}</DataTable.Cell>
                         <DataTable.Cell style={{flex: 2}}>{user.nom}</DataTable.Cell>
                         <DataTable.Cell style={{flex: 2}}>{user.post_nom}</DataTable.Cell>
-                        <DataTable.Cell style={{flex: 1, justifyContent: 'center'}} onPress={() => deleteUser(user)}>
+                        {user.id !== currentUser.id && <DataTable.Cell style={{flex: 1, justifyContent: 'center'}} onPress={() => deleteUser(user)}>
                             <AntDesign name="deleteuser" size={24} color="#d9534f"  />
-                        </DataTable.Cell>
+                          </DataTable.Cell>}
                     </DataTable.Row>
                 ))}
 
