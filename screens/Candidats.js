@@ -66,6 +66,11 @@ const Candidats = ({ candidat, navigation, message }) => {
       testID={`candidat-${candidat.id}`}
       style={styles.container}
     >
+      <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
+        <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
+          {`${votes.filter(vote => vote.candidat_id === candidat.id).length} voix`}
+        </Text>
+      </View>
       {!!users && !!currentCandidat &&
         <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
           <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>

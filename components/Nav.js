@@ -25,7 +25,8 @@ const Nav = ({ navigation }) => {
   const logOutUser = () => {
     auth.signOut().then(response => {
         navigation.navigate("Authentication");
-    }).catch(error => setMessage(error));
+        console.log(response)
+    }).catch(error => console.log(error));
   }
   return (
     <View style={styles.main}>
