@@ -49,7 +49,10 @@ const Candidats = ({ candidat, navigation, message }) => {
       setUser(JSON.parse(user));
       endPoint.getVotes().then(res => {
         setVotes(res.data);
-        const result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
+        let result = false;
+        if(res.data.length >= 1){
+          result = res.data.map(vote => vote.user_id).includes(JSON.parse(user).id);
+        }
         setDoesVote(result)
         //console.warn(result);
         //setDoesVote();
@@ -66,11 +69,13 @@ const Candidats = ({ candidat, navigation, message }) => {
       testID={`candidat-${candidat.id}`}
       style={styles.container}
     >
-      <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
-        <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
-          {`${votes.filter(vote => vote.candidat_id === candidat.id).length} voix`}
-        </Text>
+      {!!votes &&
+        <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
+          <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
+            {votes.length >= 1 ? `${votes.filter(vote => vote.candidat_id === candidat.id).length} voix` : '0 voix'}
+          </Text>
       </View>
+      }
       {!!users && !!currentCandidat &&
         <View style={styles.card, { backgroundColor: '#317AFF', paddingTop: 10} }>
           <Text style={[styles.title, { fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }]}>
